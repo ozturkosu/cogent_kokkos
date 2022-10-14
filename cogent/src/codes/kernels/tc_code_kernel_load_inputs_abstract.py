@@ -295,20 +295,20 @@ def tc_gen_code_Kernel_Load_Inputs_Abstracts(f, num_code_tabs,
             #   [Code][Write]
             #
             tc_helper.tc_gen_helper_code_a_line(f, num_code_tabs,   str_smem_array,                 -1)
-            tc_helper.tc_gen_helper_code_a_line(f, 0,               "[",                            -1)
+            tc_helper.tc_gen_helper_code_a_line(f, 0,               "(",                            -1)
             tc_helper.tc_gen_helper_code_a_line(f, 0,               str_load_smem_column,           -1)
             tc_helper.tc_gen_helper_code_a_line(f, 0,               str_load_smem_column_inner,     -1)
-            tc_helper.tc_gen_helper_code_a_line(f, 0,               "]",                            -1)
-            tc_helper.tc_gen_helper_code_a_line(f, 0,               "[",                            -1)
+            tc_helper.tc_gen_helper_code_a_line(f, 0,               ",",                            -1)
+            tc_helper.tc_gen_helper_code_a_line(f, 0,               " ",                            -1)
             tc_helper.tc_gen_helper_code_a_line(f, 0,               str_load_smem_row,              -1)
             tc_helper.tc_gen_helper_code_a_line(f, 0,               str_load_smem_row_inner,        -1)
-            tc_helper.tc_gen_helper_code_a_line(f, 0,               "] = ",                         -1)
+            tc_helper.tc_gen_helper_code_a_line(f, 0,               ") = ",                         -1)
             tc_helper.tc_gen_helper_code_a_line(f, 0,               str_input_array,                -1)
-            tc_helper.tc_gen_helper_code_a_line(f, 0,               "[",                            -1)
+            tc_helper.tc_gen_helper_code_a_line(f, 0,               "(",                            -1)
             tc_helper.tc_gen_helper_code_a_line(f, 0,               str_load_global_addr_ext,       -1)
             tc_helper.tc_gen_helper_code_a_line(f, 0,               " + ",                          -1)
             tc_helper.tc_gen_helper_code_a_line(f, 0,               str_load_global_addr_int,       -1)
-            tc_helper.tc_gen_helper_code_a_line(f, 0,               "];",                            1)
+            tc_helper.tc_gen_helper_code_a_line(f, 0,               ");",                            1)
 
     #
     #   [Code][Load][Input][For-Statements] Close

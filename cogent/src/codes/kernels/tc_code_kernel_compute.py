@@ -64,40 +64,40 @@ def tc_gen_code_Kernel_Compute(f,   size_tb_x,  size_tb_y, size_reg_x, size_reg_
         if tensor_contraction[0][2] == "y":     # "left" is mapped on "y"
             for idx_left in range(0, size_reg_y):
                 if opt_pre_computed == -1:
-                    f.write("\t\t\ttemp_bv[" + str(idx_left)  + "] = sm_a[ll][" +  str_left_offset + " + " + str(int_str_t2 * idx_left) + "];\n")
+                    f.write("\t\t\t\t\t\ttemp_bv[" + str(idx_left)  + "] = sm_a[ll][" +  str_left_offset + " + " + str(int_str_t2 * idx_left) + "];\n")
                 else:
-                    f.write("\t\t\ttemp_bv[" + str(idx_left)  + "] = sm_a[ll][dev_" + tensor_contraction[0][3] + "_offset[l_idx_t3] + " + str(int_str_t2 * idx_left) + "];\n")
+                    f.write("\t\t\t\t\t\ttemp_bv[" + str(idx_left)  + "] = sm_a[ll][dev_" + tensor_contraction[0][3] + "_offset[l_idx_t3] + " + str(int_str_t2 * idx_left) + "];\n")
         else:                                   # "right" is mapped on "y"
             for idx_right in range(0, size_reg_y):
                 if opt_pre_computed == -1:
-                    f.write("\t\t\ttemp_bv[" + str(idx_right) + "] = sm_b[ll][" + str_right_offset + " + " + str(int_str_v2 * idx_right) + "];\n")
+                    f.write("\t\t\t\t\t\ttemp_bv[" + str(idx_right) + "] = sm_b[ll][" + str_right_offset + " + " + str(int_str_v2 * idx_right) + "];\n")
                 else:
-                    f.write("\t\t\ttemp_bv[" + str(idx_right) + "] = sm_b[ll][dev_" + tensor_contraction[1][3] + "_offset[l_idx_t3] + " + str(int_str_v2 * idx_right) + "];\n")
+                    f.write("\t\t\t\t\t\ttemp_bv[" + str(idx_right) + "] = sm_b[ll][dev_" + tensor_contraction[1][3] + "_offset[l_idx_t3] + " + str(int_str_v2 * idx_right) + "];\n")
         f.write("\n")
 
         # xx for size_reg_x
         # pragma??
         #
-        f.write("\t\t\tfor (int xx = 0; xx < " + str(size_reg_x) + "; xx++) // (1)\n")
-        f.write("\t\t\t{\n")
+        f.write("\t\t\t\t\t\tfor (int xx = 0; xx < " + str(size_reg_x) + "; xx++) // (1)\n")
+        f.write("\t\t\t\t\t\t{\n")
         if tensor_contraction[0][2] == "x": # "left" is mapped on "x"
             if opt_pre_computed == -1:
-                f.write("\t\t\t\ttemp_av = sm_a[ll][" + str_left_offset + " + (xx * " + str(int_str_t2) + ")];\n")
+                f.write("\t\t\t\t\t\t\ttemp_av = sm_a[ll][" + str_left_offset + " + (xx * " + str(int_str_t2) + ")];\n")
             else:
-                f.write("\t\t\t\ttemp_av = sm_a[ll][dev_" + tensor_contraction[0][3] + "_offset[l_idx_t3] + (xx * " + str(int_str_t2) + ")];\n")
+                f.write("\t\t\t\t\t\t\ttemp_av = sm_a[ll][dev_" + tensor_contraction[0][3] + "_offset[l_idx_t3] + (xx * " + str(int_str_t2) + ")];\n")
         else:                               # "right" is mapped on "x"
             if opt_pre_computed == -1:
-                f.write("\t\t\t\ttemp_av = sm_b[ll][" + str_right_offset + " + (xx * " + str(int_str_v2) + ")];\n")
+                f.write("\t\t\t\t\t\t\ttemp_av = sm_b[ll][" + str_right_offset + " + (xx * " + str(int_str_v2) + ")];\n")
             else:
-                f.write("\t\t\t\ttemp_av = sm_b[ll][dev_" + tensor_contraction[1][3] + "_offset[l_idx_t3] + (xx * " + str(int_str_v2) + ")];\n")
+                f.write("\t\t\t\t\t\t\ttemp_av = sm_b[ll][dev_" + tensor_contraction[1][3] + "_offset[l_idx_t3] + (xx * " + str(int_str_v2) + ")];\n")
         f.write("\n")
 
         #
         #   [3] Compute
         #
         for yy in range(0, size_reg_y):
-            f.write("\t\t\t\treg_tile[" + str(yy) + "][xx] " + tensor_contraction[2] + " temp_av * temp_bv[" + str(yy) + "];\n")
-        f.write("\t\t\t}\n")
+            f.write("\t\t\t\t\t\t\treg_tile[" + str(yy) + "][xx] " + tensor_contraction[2] + " temp_av * temp_bv[" + str(yy) + "];\n")
+        f.write("\t\t\t\t\t\t}\n")
     else:                                       # if x = max(x, y)
         #
         #   [2] |REG_X| > |REG_Y|
@@ -150,25 +150,25 @@ def tc_gen_code_Kernel_Compute(f,   size_tb_x,  size_tb_y, size_reg_x, size_reg_
             #
             for idx_right in range(0, size_reg_x):
                 if opt_pre_computed == -1:
-                    f.write("\t\t\ttemp_bv[" + str(idx_right) + "] = sm_a[ll][" + str_left_offset +  " + " + str(int_str_t2 * idx_right) + "];\n")
+                    f.write("\t\t\t\t\t\ttemp_bv[" + str(idx_right) + "] = sm_a[ll][" + str_left_offset +  " + " + str(int_str_t2 * idx_right) + "];\n")
                 else:
-                    f.write("\t\t\ttemp_bv[" + str(idx_right) + "] = sm_a[ll][dev_" + tensor_contraction[0][3] + "_offset[l_idx_t3] + " + str(int_str_t2 * idx_right) + "];\n")
+                    f.write("\t\t\t\t\t\ttemp_bv[" + str(idx_right) + "] = sm_a[ll][dev_" + tensor_contraction[0][3] + "_offset[l_idx_t3] + " + str(int_str_t2 * idx_right) + "];\n")
         else:
             #
             #   RIGHT is mapped on "X"
             #
             for idx_right in range(0, size_reg_x):
                 if opt_pre_computed == -1:
-                    f.write("\t\t\ttemp_bv[" + str(idx_right) + "] = sm_b[ll][" + str_right_offset + " + " + str(int_str_v2 * idx_right) + "];\n")
+                    f.write("\t\t\t\t\t\ttemp_bv[" + str(idx_right) + "] = sm_b[ll][" + str_right_offset + " + " + str(int_str_v2 * idx_right) + "];\n")
                 else:
-                    f.write("\t\t\ttemp_bv[" + str(idx_right) + "] = sm_b[ll][dev_" + tensor_contraction[1][3] + "_offset[l_idx_t3] + " + str(int_str_v2 * idx_right) + "];\n")
+                    f.write("\t\t\t\t\t\ttemp_bv[" + str(idx_right) + "] = sm_b[ll][dev_" + tensor_contraction[1][3] + "_offset[l_idx_t3] + " + str(int_str_v2 * idx_right) + "];\n")
         f.write("\n")
 
         #
         #   
         #
-        f.write("\t\t\tfor (int yy = 0; yy < " + str(size_reg_y) + "; yy++) // (2)\n")
-        f.write("\t\t\t{\n")
+        f.write("\t\t\t\t\t\tfor (int yy = 0; yy < " + str(size_reg_y) + "; yy++) // (2)\n")
+        f.write("\t\t\t\t\t\t{\n")
 
         #
         #   "temp_av" <--- |REG_Y|
@@ -178,25 +178,25 @@ def tc_gen_code_Kernel_Compute(f,   size_tb_x,  size_tb_y, size_reg_x, size_reg_
             #   LEFT is mapped on "Y"
             #
             if opt_pre_computed == -1:
-                f.write("\t\t\t\ttemp_av = sm_a[ll][" + str_left_offset + " + (yy * " + str(int_str_t2) + ")];\n")    # int_str_t2 was int_str_v2
+                f.write("\t\t\t\t\t\t\ttemp_av = sm_a[ll][" + str_left_offset + " + (yy * " + str(int_str_t2) + ")];\n")    # int_str_t2 was int_str_v2
             else:
-                f.write("\t\t\t\ttemp_av = sm_a[ll][dev_" + tensor_contraction[0][3] + "_offset[l_idx_t3] + (yy * " + str(int_str_t2) + ")];\n")    # int_str_t2 was int_str_v2
+                f.write("\t\t\t\t\t\t\ttemp_av = sm_a[ll][dev_" + tensor_contraction[0][3] + "_offset[l_idx_t3] + (yy * " + str(int_str_t2) + ")];\n")    # int_str_t2 was int_str_v2
         else:
             #
             #   RIGHT is mapped on "Y"
             #
             if opt_pre_computed == -1:
-                f.write("\t\t\t\ttemp_av = sm_b[ll][" + str_right_offset + " + (yy * " + str(int_str_v2) + ")];\n")
+                f.write("\t\t\t\t\t\t\ttemp_av = sm_b[ll][" + str_right_offset + " + (yy * " + str(int_str_v2) + ")];\n")
             else:
-                f.write("\t\t\t\ttemp_av = sm_b[ll][dev_" + tensor_contraction[1][3] + "_offset[l_idx_t3] + (yy * " + str(int_str_v2) + ")];\n")
+                f.write("\t\t\t\t\t\t\ttemp_av = sm_b[ll][dev_" + tensor_contraction[1][3] + "_offset[l_idx_t3] + (yy * " + str(int_str_v2) + ")];\n")
         f.write("\n")
 
         #
         #   [Computations]  |REG_X| is enumerated.
         #
         for xx in range(0, size_reg_x):
-            f.write("\t\t\t\treg_tile[yy][" + str(xx) + "] " + tensor_contraction[2] + " temp_av * temp_bv[" + str(xx) + "];\n")
-        f.write("\t\t\t}\n")
+            f.write("\t\t\t\t\t\t\treg_tile[yy][" + str(xx) + "] " + tensor_contraction[2] + " temp_av * temp_bv[" + str(xx) + "];\n")
+        f.write("\t\t\t\t\t\t}\n")
 
     #
     #

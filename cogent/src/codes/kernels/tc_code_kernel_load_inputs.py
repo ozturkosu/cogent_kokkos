@@ -19,7 +19,7 @@ def tc_gen_code_kernel_load_inputs_base(f,  opt_gen_ext,            opt_gen_int,
     #
     #
     #
-    num_code_tabs = 2
+    num_code_tabs = 5
     #
     #
     #
@@ -37,7 +37,7 @@ def tc_gen_code_kernel_load_inputs_base(f,  opt_gen_ext,            opt_gen_int,
     #   }
     #   __synchthread();
     #
-    #print ("tensor_contraction: ", tensor_contraction)
+    print ("tensor_contraction: ", tensor_contraction)
 
     #
     #   Which Axis is mapped on REG for Input-Left and Input-Right
@@ -133,7 +133,7 @@ def tc_gen_code_kernel_load_inputs_base(f,  opt_gen_ext,            opt_gen_int,
     #
     #   END: After Loading Both Inputs
     #
-    tc_helper.tc_gen_helper_code_a_line(f, num_code_tabs, "__syncthreads();", 1)
+    tc_helper.tc_gen_helper_code_a_line(f, num_code_tabs, "thread.team_barrier();", 1)
     
     #   
     tc_helper.tc_gen_helper_code_a_line(f, num_code_tabs, "//---------------------------------------------------------------------------------------------------", 1)
